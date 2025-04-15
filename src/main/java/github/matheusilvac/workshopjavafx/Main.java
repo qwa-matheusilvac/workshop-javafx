@@ -18,6 +18,7 @@ public class Main extends Application {
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
 
+
         mainScene =  new Scene(scrollPane);
         stage.setTitle("Hello!");
         stage.setScene(mainScene);

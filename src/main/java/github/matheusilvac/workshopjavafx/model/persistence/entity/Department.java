@@ -1,5 +1,6 @@
-package github.matheusilvac.workshopjavafx.model.entity;
+package github.matheusilvac.workshopjavafx.model.persistence.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -9,6 +10,8 @@ import lombok.*;
 @ToString
 public class Department {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
