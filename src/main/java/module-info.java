@@ -6,6 +6,7 @@ module github.matheusilvac.workshopjavafx {
     requires jdk.compiler;
     requires static lombok;
     requires jakarta.persistence;
+    requires java.desktop;
 
     opens github.matheusilvac.workshopjavafx.gui to javafx.fxml;
     opens github.matheusilvac.workshopjavafx.model.persistence.entity to javafx.base;
