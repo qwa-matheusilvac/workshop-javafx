@@ -1,18 +1,16 @@
 package github.matheusilvac.workshopjavafx.model.services;
 
+import github.matheusilvac.workshopjavafx.model.dao.DaoFactory;
+import github.matheusilvac.workshopjavafx.model.dao.DepartmentDao;
 import github.matheusilvac.workshopjavafx.model.persistence.entity.Department;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentService {
 
+    private DepartmentDao dao = DaoFactory.createDepartmentDao();
+
     public List<Department> findAll(){
-      List<Department> list = new ArrayList<>();
-      list.add(new Department(1, "Books"));
-        list.add(new Department(2, "Computer"));
-        list.add(new Department(3, "Eletronics"));
-        list.add(new Department(4, "Internet"));
-       return list;
+      return dao.findAll();
     };
 }
