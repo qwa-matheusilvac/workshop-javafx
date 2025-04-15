@@ -8,17 +8,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class Main extends Application {
+
+    private static Scene mainScene;
+
     @Override
     public void start(Stage stage) throws IOException {
         ScrollPane scrollPane = FXMLLoader.load(getClass().getResource("/github/matheusilvac/workshopjavafx/gui/MainView.fxml"));
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
 
-        Scene scene = new Scene(scrollPane);
+        mainScene =  new Scene(scrollPane);
         stage.setTitle("Hello!");
-        stage.setScene(scene);
+        stage.setScene(mainScene);
         stage.show();
+    }
+
+    public static Scene getMainScene() {
+        return mainScene;
     }
 
     public static void main(String[] args) {
