@@ -110,7 +110,7 @@ public class SellerDaoJDBC implements SellerDao {
             st = conn.prepareStatement(
                     "SELECT seller.*,department.Name as DepName "
                             + "FROM seller INNER JOIN department "
-                            + "ON seller.DepartmentId = department.Id "
+                            + "ON seller.department_id = department.Id "
                             + "WHERE seller.Id = ?");
 
             st.setInt(1, id);
@@ -155,34 +155,31 @@ public class SellerDaoJDBC implements SellerDao {
         ResultSet rs = null;
         try {
             st = conn.prepareStatement(
-                    "SELECT seller.*,department.Name as DepName "
-                            + "FROM seller INNER JOIN department "
-                            + "ON seller.DepartmentId = department.Id "
-                            + "ORDER BY Name");
-
+                    "SELECT seller.*,department.Name as DepName " +
+                            "FROM seller INNER JOIN department " +
+                            "ON seller.department_id = department.Id " +
+                            "ORDER BY Name"
+            );
             rs = st.executeQuery();
 
-            List<Seller> list = new ArrayList<>();
+            List<Seller> sellers = new ArrayList<>();
             Map<Integer, Department> map = new HashMap<>();
 
             while (rs.next()) {
-
-                Department dep = map.get(rs.getInt("DepartmentId"));
+                Department dep = map.get(rs.getInt("department_id"));
 
                 if (dep == null) {
-                    dep = instantiateDepartment(rs);
-                    map.put(rs.getInt("DepartmentId"), dep);
+                    dep = new Department(rs.getInt("department_id"), rs.getString("DepName"));
+                    map.put(rs.getInt("department_id"), dep);
                 }
-
-                Seller obj = instantiateSeller(rs, dep);
-                list.add(obj);
+                Seller seller = new Seller(rs.getInt("id"), rs.getString("name"), rs.getString("email"), rs.getDate("birth_date"), rs.getDouble("base_salary"), dep);
+                sellers.add(seller);
             }
-            return list;
-        }
-        catch (SQLException e) {
+            return sellers;
+
+        } catch (SQLException e) {
             throw new DBException(e.getMessage());
-        }
-        finally {
+        } finally {
             DB.closeStatement(st);
             DB.closeResultSet(rs);
         }

@@ -3,6 +3,7 @@ package github.matheusilvac.workshopjavafx.gui;
 import github.matheusilvac.workshopjavafx.Main;
 import github.matheusilvac.workshopjavafx.gui.util.Alerts;
 import github.matheusilvac.workshopjavafx.model.services.DepartmentService;
+import github.matheusilvac.workshopjavafx.model.services.SellerService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,7 +34,10 @@ public class MainViewController implements Initializable {
 
     @FXML
     public void onMenuItemSellerAction(){
-        System.out.println("onMenuItemSellerAction");
+        loadView("/github/matheusilvac/workshopjavafx/gui/SellerList.fxml", (SellerListController controller) -> {
+            controller.setSellerService(new SellerService());
+            controller.updateTableView();
+        });
     }
 
     @FXML
