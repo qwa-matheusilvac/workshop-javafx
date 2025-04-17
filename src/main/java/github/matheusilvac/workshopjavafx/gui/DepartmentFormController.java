@@ -103,7 +103,7 @@ public class DepartmentFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        initializeNodes();
     }
 
     public void subscribeDataChangeListener(DataChangeListener dataChangeListener) {

@@ -106,6 +106,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
             dialogStage.showAndWait();
 
         } catch (IOException e) {
+            e.printStackTrace();
             Alerts.showAlert("IO EXCPTION", "Error Loading View", e.getMessage(), Alert.AlertType.ERROR);
         }
     }

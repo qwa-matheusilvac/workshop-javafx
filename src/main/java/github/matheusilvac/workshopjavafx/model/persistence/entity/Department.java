@@ -7,7 +7,6 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Department {
 
     @Id
@@ -16,4 +15,9 @@ public class Department {
 
     private String name;
 
+    @Override
+    public String toString() {
+        return  name;
+
+    }
 }
