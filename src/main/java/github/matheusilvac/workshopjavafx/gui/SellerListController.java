@@ -7,7 +7,6 @@ import github.matheusilvac.workshopjavafx.gui.util.Alerts;
 import github.matheusilvac.workshopjavafx.gui.util.Utils;
 import github.matheusilvac.workshopjavafx.model.persistence.entity.Seller;
 import github.matheusilvac.workshopjavafx.model.services.SellerService;
-import github.matheusilvac.workshopjavafx.model.services.SellerService;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +23,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -40,6 +40,14 @@ public class SellerListController implements Initializable, DataChangeListener {
 
     @FXML
     private TableColumn<Seller, String> tableColumnName;
+    @FXML
+    private TableColumn<Seller, String> tableColumnEmail;
+
+    @FXML
+    private TableColumn<Seller, Date> tableColumnBirthDate;
+
+    @FXML
+    private TableColumn<Seller, Double> tableColumnBaseSalary;
 
     @FXML
     private TableColumn<Seller, Seller> tableColumnEdit;
@@ -56,7 +64,7 @@ public class SellerListController implements Initializable, DataChangeListener {
     public void onBtNewAction(ActionEvent event) {
         Stage stage = Utils.currentStage(event);
         Seller obj = new Seller();
-        //createDialogForm(obj, "/github/matheusilvac/workshopjavafx/gui/SellerForm.fxml", stage);
+        createDialogForm(obj, "/github/matheusilvac/workshopjavafx/gui/SellerForm.fxml", stage);
     }
 
     public void setSellerService(SellerService service) {
@@ -71,6 +79,11 @@ public class SellerListController implements Initializable, DataChangeListener {
     private void initializeNodes() {
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        tableColumnBirthDate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
+        Utils.formatTableColumnDate(tableColumnBirthDate, "dd/MM/yyyy");
+        tableColumnBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
+        Utils.formatTableColumnDouble(tableColumnBaseSalary, 2);
 
         Stage stage = (Stage) Main.getMainScene().getWindow();
         tableViewSeller.prefHeightProperty().bind(stage.heightProperty());
@@ -83,58 +96,58 @@ public class SellerListController implements Initializable, DataChangeListener {
         List<Seller> list = service.findAll();
         obsList = FXCollections.observableArrayList(list);
         tableViewSeller.setItems(obsList);
-       // initEditButtons();
+        initEditButtons();
         initRemoveButtons();
     }
 
-//    private void createDialogForm(Seller obj, String absoluteName, Stage stage) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-//            Pane pane = loader.load();
-//
-//            SellerFormController controller = loader.getController();
-//            controller.setSeller(obj);
-//            controller.setService(new SellerService());
-//            controller.subscribeDataChangeListener(this);
-//            controller.updateFormData();
-//
-//            Stage dialogStage = new Stage();
-//            dialogStage.setTitle("Create Seller");
-//            dialogStage.setScene(new Scene(pane));
-//            dialogStage.setResizable(false);
-//            dialogStage.initOwner(stage);
-//            dialogStage.initModality(Modality.WINDOW_MODAL);
-//            dialogStage.showAndWait();
-//
-//        } catch (IOException e) {
-//            Alerts.showAlert("IO EXCPTION", "Error Loading View", e.getMessage(), Alert.AlertType.ERROR);
-//        }
-//    }
+    private void createDialogForm(Seller obj, String absoluteName, Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+            Pane pane = loader.load();
+
+            SellerFormController controller = loader.getController();
+            controller.setSeller(obj);
+            controller.setService(new SellerService());
+            controller.subscribeDataChangeListener(this);
+            controller.updateFormData();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Create Seller");
+            dialogStage.setScene(new Scene(pane));
+            dialogStage.setResizable(false);
+            dialogStage.initOwner(stage);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
+            Alerts.showAlert("IO EXCPTION", "Error Loading View", e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
 
     @Override
     public void onDataChange() {
         updateTableView();
     }
 
-//    private void initEditButtons() {
-//        tableColumnEdit.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
-//        tableColumnEdit.setCellFactory(param -> new TableCell<Seller, Seller>() {
-//            private final Button button = new Button("edit");
-//
-//            @Override
-//            protected void updateItem(Seller obj, boolean empty) {
-//                super.updateItem(obj, empty);
-//                if (obj == null) {
-//                    setGraphic(null);
-//                    return;
-//                }
-//                setGraphic(button);
-//                button.setOnAction(
-//                        event -> createDialogForm(
-//                                obj, "/github/matheusilvac/workshopjavafx/gui/SellerForm.fxml", Utils.currentStage(event)));
-//            }
-//        });
-//    }
+    private void initEditButtons() {
+        tableColumnEdit.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        tableColumnEdit.setCellFactory(param -> new TableCell<Seller, Seller>() {
+            private final Button button = new Button("edit");
+
+            @Override
+            protected void updateItem(Seller obj, boolean empty) {
+                super.updateItem(obj, empty);
+                if (obj == null) {
+                    setGraphic(null);
+                    return;
+                }
+                setGraphic(button);
+                button.setOnAction(
+                        event -> createDialogForm(
+                                obj, "/github/matheusilvac/workshopjavafx/gui/SellerForm.fxml", Utils.currentStage(event)));
+            }
+        });
+    }
 
     private void initRemoveButtons() {
         tableColumnREMOVE.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
