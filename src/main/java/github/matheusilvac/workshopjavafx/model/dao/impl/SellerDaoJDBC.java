@@ -25,7 +25,7 @@ public class SellerDaoJDBC implements SellerDao {
         try {
             st = conn.prepareStatement(
                     "INSERT INTO seller "
-                            + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+                            + "(name, email, birth_date, base_salary, department_id) "
                             + "VALUES "
                             + "(?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
@@ -64,7 +64,7 @@ public class SellerDaoJDBC implements SellerDao {
         try {
             st = conn.prepareStatement(
                     "UPDATE seller "
-                            + "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
+                            + "SET Name = ?, Email = ?, birth_date = ?, base_salary = ?, department_id = ? "
                             + "WHERE Id = ?");
 
             st.setString(1, obj.getName());
@@ -193,8 +193,8 @@ public class SellerDaoJDBC implements SellerDao {
             st = conn.prepareStatement(
                     "SELECT seller.*,department.Name as DepName "
                             + "FROM seller INNER JOIN department "
-                            + "ON seller.DepartmentId = department.Id "
-                            + "WHERE DepartmentId = ? "
+                            + "ON seller.department_id = department.Id "
+                            + "WHERE Department_Id = ? "
                             + "ORDER BY Name");
 
             st.setInt(1, department.getId());
